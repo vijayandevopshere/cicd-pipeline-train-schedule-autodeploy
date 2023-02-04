@@ -38,9 +38,9 @@ pipeline {
                 script {
                     echo 'Begin Push Docker'
                     //docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-login') {
-                    withCredentials([string(credentialsId: 'docker-hub-login', variable: 'docker-hub-login' )]) {
+                    withCredentials([string(credentialsId: 'docker_hub_login', variable: 'docker_hub_login' )]) {
                         echo 'Before login'
-                        sh 'docker login -u vijayandevopshere -p ${docker-hub-login}'
+                        sh 'docker login -u vijayandevopshere -p ${docker_hub_login}'
                          echo 'After login'
                         //sh 'docker image push app.push("${env.BUILD_NUMBER}")
                         app.push("${env.BUILD_NUMBER}")
