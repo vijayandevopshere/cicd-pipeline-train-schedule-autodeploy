@@ -38,7 +38,7 @@ pipeline {
                 script {
                     echo 'Begin Push Docker'
                     //docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-login') {
-                    withCredentials([string(credentialsId: 'docker_hub_login', variable: 'docker_hub_login')]) {
+                    withCredentials([usernameColonPassword(credentialsId: 'docker_hub_login', variable: 'docker_hub_login')]) {
                         echo 'Before login'
                         sh 'docker login -u vijayandevopshere -p ${docker_hub_login}'
                          echo 'After login'
