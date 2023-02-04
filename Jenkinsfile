@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     echo 'Begin Push Docker'
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-token') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-login') {
                         app.push("${env.BUILD_NUMBER}")
                         echo 'After Push1'
                         app.push("latest")
