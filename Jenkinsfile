@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "train-schedule"
+        DOCKER_IMAGE_NAME = "vijayandevopshere\train-schedule"
         //sample
     }
     stages {
@@ -36,9 +36,12 @@ pipeline {
            // }
             steps {
                 script {
+                    echo 'Begin Push Docker'
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-token') {
                         app.push("${env.BUILD_NUMBER}")
+                        echo 'After Push1'
                         app.push("latest")
+                        echo 'After Push2'
                     }
                 }
             }
