@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Inside Docker build'
                 script {
-                    def app = docker.build(DOCKER_IMAGE_NAME)
+                    app = docker.build(DOCKER_IMAGE_NAME)
                     echo 'After Docker.build'
                     app.inside {
                         echo 'After App.Inside'
