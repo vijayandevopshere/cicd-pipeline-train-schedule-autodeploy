@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "vijayandevopshere/train-schedule"
+        DOCKER_IMAGE_NAME = "train-schedule"
         //sample
     }
     stages {
@@ -19,9 +19,12 @@ pipeline {
               //  branch 'master'
             //}
             steps {
+                echo 'Inside Docker build'
                 script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
+                    def app = docker.build(DOCKER_IMAGE_NAME)
+                    echo 'After Docker.build'
                     app.inside {
+                        echo 'After App.Inside'
                         sh 'echo Hello, World!'
                     }
                 }
