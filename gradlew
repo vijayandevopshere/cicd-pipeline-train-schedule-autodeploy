@@ -33,6 +33,7 @@ DEFAULT_JVM_OPTS=""
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD="maximum"
 
+echo "one"
 warn () {
     echo "$*"
 }
@@ -65,7 +66,8 @@ case "`uname`" in
 esac
 
 CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
-
+echo "two"
+echo "$JAVA_HOME"
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
@@ -88,6 +90,7 @@ Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
 fi
 
+echo "$JAVACMD"
 # Increase the maximum file descriptors if we can.
 if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
     MAX_FD_LIMIT=`ulimit -H -n`
@@ -166,7 +169,8 @@ eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$A
 
 # by default we should be in the correct project dir, but when run from Finder on Mac, the cwd is wrong
 if [ "$(uname)" = "Darwin" ] && [ "$HOME" = "$PWD" ]; then
+  echo "$(dirname "$0")"
   cd "$(dirname "$0")"
 fi
-
+echo "$JAVACMD" "$@"
 exec "$JAVACMD" "$@"
