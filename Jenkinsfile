@@ -82,10 +82,10 @@ pipeline {
                 script
                     {
                         try{
-                        sh "ssh root@43.205.213.69 cd /opt/yml && kubectl apply -f ."
+                        sh 'ssh root@43.205.213.69 "cd /opt/yml && kubectl apply -f ."'
                         }
                         catch(error){
-                         sh "ssh root@43.205.213.69 cd /opt/yml && kubectl create -f ."
+                         sh 'ssh root@43.205.213.69 "cd /opt/yml && kubectl create -f ."'
                         }
                     }
                 }
