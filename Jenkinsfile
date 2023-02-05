@@ -52,21 +52,21 @@ pipeline {
                 }
             }
         }
-        stage('CanaryDeploy') {
+        //stage('CanaryDeploy') {
             //when {
               //  branch 'master'
             //}
-            environment { 
-                CANARY_REPLICAS = 1
-            }
-            steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-            }
-        }
+          //  environment { 
+            //    CANARY_REPLICAS = 1
+            //}
+          //  steps {
+            //    kubernetesDeploy(
+              //      kubeconfigId: 'kubeconfig',
+                //    configs: 'train-schedule-kube-canary.yml',
+                  //  enableConfigSubstitution: true
+                //)
+            //}
+        //}
         stage('DeployToProduction') {
             //when {
               //  branch 'master'
@@ -75,18 +75,32 @@ pipeline {
                 CANARY_REPLICAS = 0
             }
             steps {
-                input 'Deploy to Production?'
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
+                echo 'Deploy to Production?'
+                sshagent(['kube_master']) {
+          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube.yml root@43.205.213.69:/opt/yml'
+          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube-canary.yml root@43.205.213.69:/opt/yml'
+                script
+                    {
+                        try{
+                        sh "ssh root@43.205.213.69:/opt/yml kubectl apply -f ."
+                        }
+                        catch(error){
+                         sh "ssh root@43.205.213.69:/opt/yml kubectl create -f ."
+                        }
+                    }
+                }
+                
+                //milestone(1)
+                //kubernetesDeploy(
+                  //  kubeconfigId: 'kubeconfig',
+                   // configs: 'train-schedule-kube-canary.yml',
+                    //enableConfigSubstitution: true
+                //)
+                //kubernetesDeploy(
+                  //  kubeconfigId: 'kubeconfig',
+                    //configs: 'train-schedule-kube.yml',
+                    //enableConfigSubstitution: true
+                //)
             }
         }
     }
