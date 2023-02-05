@@ -77,15 +77,15 @@ pipeline {
             steps {
                 echo 'Deploy to Production?'
                 sshagent(['kube_master']) {
-          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube.yml root@43.205.213.69'
-          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube-canary.yml root@43.205.213.69'
+          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube.yml root@43.205.213.69:/opt/yml'
+          sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cicd-pipeline-train-schedule-autodeploy/train-schedule-kube-canary.yml root@43.205.213.69:/opt/yml'
                 script
                     {
                         try{
-                        sh "ssh root@43.205.213.69 kubectl apply -f ."
+                        sh "ssh root@43.205.213.69 cd /opt/yml && kubectl apply -f ."
                         }
                         catch(error){
-                         sh "ssh root@43.205.213.69 kubectl create -f ."
+                         sh "ssh root@43.205.213.69 cd /opt/yml && kubectl create -f ."
                         }
                     }
                 }
